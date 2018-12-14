@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BuscaPedido</string>
+    <string name="cliente"><b>Cliente:</b></string>
+    <string name="emissao"><b>Emissão:</b></string>
+    <string name="cidade"><b>Cidade:</b></string>
+    <string name="uf"><b>UF:</b></string>
+    <string name="representante"><b>Rep.:</b></string>
+    <string name="valor"><b>Valor:</b></string>
+    <string name="clienteNome"></string>
 </resources>
