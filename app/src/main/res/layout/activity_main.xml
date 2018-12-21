@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
     <LinearLayout
         android:layout_width="353dp"
         android:layout_height="510dp"
@@ -37,13 +39,12 @@
                     android:id="@+id/buscaPedido"
                     android:layout_width="186dp"
                     android:layout_height="41dp"
-                    android:layout_marginStart="28dp"
-                    android:layout_marginTop="29dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
                     android:gravity=""
                     android:hint="Pedido"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
                 <Button
                     android:id="@+id/buttonBuscar"
                     android:layout_width="100dp"
@@ -59,6 +60,26 @@
                     app:layout_constraintHorizontal_bias="0.333"
                     app:layout_constraintStart_toEndOf="@+id/buscaPedido"
                     app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="28dp"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.333"
+                    app:layout_constraintStart_toEndOf="@+id/buscaPedido"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_alignTop="@id/buttonBuscar"
+                    android:layout_alignRight="@id/buttonBuscar"/>
+
+
+
             </android.support.constraint.ConstraintLayout>
 
 

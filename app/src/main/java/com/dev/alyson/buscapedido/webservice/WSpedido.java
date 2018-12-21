@@ -17,20 +17,32 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-public class WSpedido extends AsyncTask{
+public class WSpedido extends AsyncTask<String, Void, Pedido>{
 
     String resp;
 
+    private OnSearchPedidoCompletedListener onSearchPedidoCompletedListener;
+
+    public interface OnSearchPedidoCompletedListener{
+        void onSearchPedidoCompleted(Pedido result);
+    }
+
+    public void setOnSearchPedidoCompletedListener(OnSearchPedidoCompletedListener onSearchPedidoCompletedListener){
+        this.onSearchPedidoCompletedListener = onSearchPedidoCompletedListener;
+    }
+
 
     @Override
-    protected Object doInBackground(Object[] objects) {
-        //getPedido();
-        return null;
+    protected Pedido doInBackground(String[] strings) {
+        return getPedido(Integer.parseInt(strings[0]));
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
+    protected void onPostExecute(Pedido pedido) {
+        if(onSearchPedidoCompletedListener != null){
+            onSearchPedidoCompletedListener.onSearchPedidoCompleted(pedido);
+        }
+        //super.onPostExecute(pedido);
     }
 
     public Pedido getPedido (int ped){
@@ -83,41 +95,39 @@ public class WSpedido extends AsyncTask{
 
 
         try {
-            //htse.debug = true;
+            htse.debug = true;
             htse.call(SOAP_ACTION,envelope);
 
             //SoapObject result = (SoapObject)envelope.getResponse();
             SoapObject obj = (SoapObject) envelope.bodyIn;
 
             SoapObject response = (SoapObject) obj.getProperty(0);
-            SoapObject dadosResultado = (SoapObject) response.getProperty("dadosResultado");
-            String erroExecucao = (String) response.getProperty("erroExecucao");
             SoapPrimitive mensagemRetorno = (SoapPrimitive) response.getProperty("mensagemRetorno");
 
-            if(erroExecucao == null ){ //&& mensagemRetorno.toString() == "Consulta Finalizada"
+            if(mensagemRetorno.toString().equals("Consulta Finalizada")) {
 
-                String NOME = dadosResultado.getProperty("nomCli").toString();
-                //String NR_PEDIDO = dadosResultado.getProperty("nomCli").toString();
-                Double VALOR =  Double.parseDouble(dadosResultado.getProperty("vlrLiq").toString());
-                String NOME_REP = dadosResultado.getProperty("nomRep").toString();
-                String DT_EMISSAO = dadosResultado.getProperty("datEmi").toString();
-                String CIDADE = dadosResultado.getProperty("cidCli").toString();
-                String UF = dadosResultado.getProperty("sigUfs").toString();
+                SoapObject dadosResultado = (SoapObject) response.getProperty("dadosResultado");
+                String erroExecucao = (String) response.getProperty("erroExecucao");
 
-                pedido.setNomeCliente(NOME);
-                pedido.setNumeroPedido("901108");
-                pedido.setValorPedido(VALOR);
-                pedido.setCidadeCliente(CIDADE);
-                pedido.setDataEmissao(DT_EMISSAO);
-                pedido.setUfCliente(UF);
-                pedido.setNomeRepresentante(NOME_REP);
+                if (erroExecucao == null) {
+                    String NOME = dadosResultado.getProperty("nomCli").toString();
+                    Double VALOR = Double.parseDouble(dadosResultado.getProperty("vlrLiq").toString());
+                    String NOME_REP = dadosResultado.getProperty("nomRep").toString();
+                    String DT_EMISSAO = dadosResultado.getProperty("datEmi").toString();
+                    String CIDADE = dadosResultado.getProperty("cidCli").toString();
+                    String UF = dadosResultado.getProperty("sigUfs").toString();
 
-            } else {
+                    pedido.setNomeCliente(NOME);
+                    pedido.setNumeroPedido(String.valueOf(ped));
+                    pedido.setValorPedido(VALOR);
+                    pedido.setCidadeCliente(CIDADE);
+                    pedido.setDataEmissao(DT_EMISSAO);
+                    pedido.setUfCliente(UF);
+                    pedido.setNomeRepresentante(NOME_REP);
 
+                }
 
             }
-
-
 
 
 
